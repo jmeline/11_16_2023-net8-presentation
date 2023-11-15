@@ -6,8 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient<IWeatherService, WeatherService>();
+builder.Services.AddOutputCache();
 
 var app = builder.Build();
+app.UseOutputCache();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -20,7 +22,8 @@ app.UseHttpsRedirection();
 
 app.MapGet("/getWeatherByCity/{city}", (string city, IWeatherService service) => 
         service.GetWeatherForecastByCityAsync(city))
-    .WithName("GetMarsWeather")
+    .CacheOutput(x => x.Expire(TimeSpan.FromMinutes(5)))
+    .WithName("GetWeatherForecast")
     .WithOpenApi();
 
 app.Run();
