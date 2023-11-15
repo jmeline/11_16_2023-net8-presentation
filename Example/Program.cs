@@ -7,6 +7,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient<IWeatherService, WeatherService>();
 builder.Services.AddOutputCache();
+builder.Services.AddStackExchangeRedisOutputCache(options =>
+{
+    options.InstanceName = "WeatherApi";
+    options.Configuration = "localhost:6379";
+});
 
 var app = builder.Build();
 app.UseOutputCache();
