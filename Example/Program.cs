@@ -8,10 +8,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient<IWeatherService, WeatherService>();
 
-// What happens when you register multiple INotificationServices? How can I access the different services in a class? 
-builder.Services.AddSingleton<INotificationService, HappyNotificationService>();
-builder.Services.AddSingleton<INotificationService, AngryNotificationService>();
-builder.Services.AddSingleton<INotificationService, SillyNotificationService>();
+builder.Services.AddKeyedSingleton<INotificationService, HappyNotificationService>(nameof(HappyNotificationService));
+builder.Services.AddKeyedSingleton<INotificationService, AngryNotificationService>(nameof(AngryNotificationService));
+builder.Services.AddKeyedSingleton<INotificationService, SillyNotificationService>(nameof(SillyNotificationService));
 
 var app = builder.Build();
 
@@ -24,7 +23,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/getWeatherByCity/{city}", (string city, IWeatherService service) => service.GetWeatherForecastByCityAsync(city))
+app.MapGet("/getWeatherByCity/{city}", async (string city, IWeatherService service, [FromKeyedServices(nameof(AngryNotificationService))] INotificationService notificationService) =>
+        {
+            var result = await service.GetWeatherForecastByCityAsync(city);
+            Console.WriteLine(notificationService.Notify(result?.name));
+            return result;
+        })
     .WithName("GetMarsWeather")
     .WithOpenApi();
 
