@@ -27,8 +27,6 @@ app.UseHttpsRedirection();
 
 app.MapGet("/getWeatherByCity/{city}", (string city, IWeatherService service) => 
         service.GetWeatherForecastByCityAsync(city))
-    .CacheOutput(x => x.Expire(TimeSpan.FromMinutes(5)))
-    .WithName("GetWeatherForecast")
+    .WithName("GetWeather")
     .WithOpenApi();
 
-app.Run();
