@@ -20,7 +20,7 @@ app.UseHttpsRedirection();
 
 app.MapGet("/getWeatherByCity/{city}", (string city, IWeatherService service) => 
         service.GetWeatherForecastByCityAsync(city))
-    .WithName("GetMarsWeather")
+    .WithName("GetWeather")
     .WithOpenApi();
 
 app.Run();
