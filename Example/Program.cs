@@ -7,6 +7,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient<IWeatherService, WeatherService>();
 
+int[] values = [9,9,9,9,9];
+Span<int> numbers = [1,2,3,4,5];
+List<int> spans = [..numbers, 6,7,8,9,10, ..values];
+Console.WriteLine(string.Join(", ", spans));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
