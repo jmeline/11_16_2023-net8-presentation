@@ -24,8 +24,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/getWeatherByCity/{city}", (string city, IWeatherService service) => service.GetWeatherForecastByCityAsync(city))
-    .WithName("GetMarsWeather")
+app.MapGet("/getWeatherByCity/{city}", (string city, IWeatherService service) => 
+        service.GetWeatherForecastByCityAsync(city))
+    .WithName("GetWeather")
     .WithOpenApi();
 
-app.Run();

@@ -397,3 +397,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 Example/.idea
+.idea/.idea.Presentation/.idea
