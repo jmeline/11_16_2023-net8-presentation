@@ -23,13 +23,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/getWeatherByCity/{city}", async (string city, IWeatherService service, [FromKeyedServices(nameof(AngryNotificationService))] INotificationService notificationService) =>
-        {
-            var result = await service.GetWeatherForecastByCityAsync(city);
-            Console.WriteLine(notificationService.Notify(result?.name));
-            return result;
-        })
-    .WithName("GetMarsWeather")
+app.MapGet("/getWeatherByCity/{city}", (string city, IWeatherService service) => 
+        service.GetWeatherForecastByCityAsync(city))
+    .WithName("GetWeather")
     .WithOpenApi();
 
 app.Run();
